@@ -6,6 +6,7 @@
     <title>Product Submission Form</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             box-sizing: border-box;
@@ -22,7 +23,7 @@
         }
         
         .container {
-            max-width: 640px;
+            max-width: 800px;
             margin: 0 auto;
             background: white;
             border-radius: 8px;
@@ -139,6 +140,102 @@
             color: #5f6368;
             font-size: 12px;
         }
+        
+        /* Products display section */
+        .products-section {
+            margin-top: 32px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 24px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .product-card {
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-bottom: 1px solid #dadce0;
+        }
+        
+        .product-info {
+            padding: 12px;
+        }
+        
+        .product-name {
+            font-weight: 500;
+            font-size: 16px;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .product-price {
+            color: #1a73e8;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .product-description {
+            font-size: 14px;
+            color: #5f6368;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 12px;
+            height: 40px;
+        }
+        
+        .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #d93025;
+            font-size: 16px;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .delete-btn:hover {
+            background: white;
+            transform: scale(1.1);
+            color: #c5221f;
+        }
+        
+        .no-products {
+            text-align: center;
+            color: #5f6368;
+            padding: 24px;
+            grid-column: 1 / -1;
+        }
     </style>
 </head>
 <body>
@@ -187,6 +284,14 @@
         
         <div id="errorMessage" class="error-message">
             There was an error submitting the form. Please try again.
+        </div>
+        
+        <!-- Products Display Section -->
+        <div class="products-section">
+            <h2 class="section-title">Submitted Products</h2>
+            <div id="productsContainer" class="products-grid">
+                <div class="no-products">No products submitted yet.</div>
+            </div>
         </div>
         
         <div class="footer">
@@ -261,6 +366,69 @@
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Submit';
                 });
+        });
+
+        // Function to display products
+        function displayProducts(products) {
+            const productsContainer = document.getElementById('productsContainer');
+            
+            if (!products || Object.keys(products).length === 0) {
+                productsContainer.innerHTML = '<div class="no-products">No products submitted yet.</div>';
+                return;
+            }
+            
+            productsContainer.innerHTML = '';
+            
+            Object.entries(products).forEach(([key, product]) => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <button class="delete-btn" data-key="${key}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <img src="${product.imageUrl}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/220x140?text=Image+Not+Found'">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
+                        <p class="product-description">${product.description}</p>
+                    </div>
+                `;
+                productsContainer.appendChild(productCard);
+            });
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productKey = this.getAttribute('data-key');
+                    deleteProduct(productKey);
+                });
+            });
+        }
+
+        // Function to delete a product
+        function deleteProduct(productKey) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                database.ref('products/' + productKey).remove()
+                    .then(() => {
+                        console.log('Product deleted successfully');
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting product:', error);
+                        alert('Error deleting product. Please try again.');
+                    });
+            }
+        }
+
+        // Listen for changes in the products data
+        database.ref('products').on('value', (snapshot) => {
+            const products = snapshot.val();
+            displayProducts(products);
+        });
+
+        // Initial load of products
+        database.ref('products').once('value').then((snapshot) => {
+            const products = snapshot.val();
+            displayProducts(products);
         });
     </script>
 </body>
