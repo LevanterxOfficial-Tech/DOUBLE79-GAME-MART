@@ -1,1 +1,481 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEVANTRE-FUNCTIONALITY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* මූලික ශෛලීකරණය */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c0c, #1a1a1a, #2d2d2d);
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* කොටස් ශීර්ෂකය */
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 4rem;
+            color: #fff;
+            padding-top: 2rem;
+            position: relative;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            opacity: 0;
+            transform: translateY(-30px);
+            animation: fadeInDown 1s ease-out 0.5s forwards;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00ffff, #00ffaa);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            animation: expandLine 1.2s ease-out 1s forwards;
+        }
+        
+        /* පියවර කොන්ටේනරය */
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+            position: relative;
+            gap: 25px;
+        }
+        
+        /* සම්බන්ධක රේඛාව */
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 80px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                rgba(0, 255, 255, 0.7), 
+                rgba(0, 255, 170, 0.7), 
+                rgba(255, 0, 128, 0.7), 
+                rgba(255, 200, 0, 0.7));
+            z-index: 1;
+            border-radius: 3px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: expandLine 1.5s ease-out 1.8s forwards;
+        }
+        
+        /* එක් එක් පියවර - ග්ලාස් බොක්ස් ආකාරයෙන් */
+        .step {
+            position: relative;
+            flex-basis: 100%;
+            margin-bottom: 2rem;
+            padding: 2.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            z-index: 2;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .step:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* පියවර අංකය */
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-radius: 50%;
+            margin: 0 auto 1.8rem;
+            position: relative;
+            z-index: 3;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: popIn 0.6s ease-out forwards;
+        }
+        
+        /* පියවර ශීර්ෂකය */
+        .step-title {
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        /* පියවර විස්තරය */
+        .step p {
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        /* අයිකන සඳහා පන්ති */
+        .step-icon {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            opacity: 0;
+            transform: scale(0) rotate(-180deg);
+            animation: iconSpin 1s ease-out forwards;
+        }
+        
+        /* වෙනස් අයිකන වර්ණ */
+        .step:nth-child(1) .step-icon { 
+            color: #00ffff; 
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+        }
+        .step:nth-child(2) .step-icon { 
+            color: #00ffaa; 
+            text-shadow: 0 0 15px rgba(0, 255, 170, 0.7);
+        }
+        .step:nth-child(3) .step-icon { 
+            color: #ff0080; 
+            text-shadow: 0 0 15px rgba(255, 0, 128, 0.7);
+        }
+        .step:nth-child(4) .step-icon { 
+            color: #ffc800; 
+            text-shadow: 0 0 15px rgba(255, 200, 0, 0.7);
+        }
+        
+        /* වෙනස් පියවර අංක පසුබිම් වර්ණ */
+        .step:nth-child(1) .step-number { 
+            background: rgba(0, 255, 255, 0.2); 
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            animation-delay: 0.5s;
+        }
+        .step:nth-child(2) .step-number { 
+            background: rgba(0, 255, 170, 0.2); 
+            box-shadow: 0 0 20px rgba(0, 255, 170, 0.5);
+            animation-delay: 0.7s;
+        }
+        .step:nth-child(3) .step-number { 
+            background: rgba(255, 0, 128, 0.2); 
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.5);
+            animation-delay: 0.9s;
+        }
+        .step:nth-child(4) .step-number { 
+            background: rgba(255, 200, 0, 0.2); 
+            box-shadow: 0 0 20px rgba(255, 200, 0, 0.5);
+            animation-delay: 1.1s;
+        }
+        
+        /* පියවර අනිමේෂන කාලයන් */
+        .step:nth-child(1) {
+            animation: fadeInUp 0.8s ease-out 0.5s forwards;
+        }
+        .step:nth-child(2) {
+            animation: fadeInUp 0.8s ease-out 0.7s forwards;
+        }
+        .step:nth-child(3) {
+            animation: fadeInUp 0.8s ease-out 0.9s forwards;
+        }
+        .step:nth-child(4) {
+            animation: fadeInUp 0.8s ease-out 1.1s forwards;
+        }
+        
+        /* අයිකන අනිමේෂන කාලයන් */
+        .step:nth-child(1) .step-icon {
+            animation-delay: 0.8s;
+        }
+        .step:nth-child(2) .step-icon {
+            animation-delay: 1.0s;
+        }
+        .step:nth-child(3) .step-icon {
+            animation-delay: 1.2s;
+        }
+        .step:nth-child(4) .step-icon {
+            animation-delay: 1.4s;
+        }
+        
+        /* ශීර්ෂක අනිමේෂන කාලයන් */
+        .step:nth-child(1) .step-title {
+            animation-delay: 1.0s;
+        }
+        .step:nth-child(2) .step-title {
+            animation-delay: 1.2s;
+        }
+        .step:nth-child(3) .step-title {
+            animation-delay: 1.4s;
+        }
+        .step:nth-child(4) .step-title {
+            animation-delay: 1.6s;
+        }
+        
+        /* විස්තර අනිමේෂන කාලයන් */
+        .step:nth-child(1) p {
+            animation-delay: 1.2s;
+        }
+        .step:nth-child(2) p {
+            animation-delay: 1.4s;
+        }
+        .step:nth-child(3) p {
+            animation-delay: 1.6s;
+        }
+        .step:nth-child(4) p {
+            animation-delay: 1.8s;
+        }
+        
+        /* ප්‍රතිචාර දක්වන සැකසුම් */
+        @media (min-width: 768px) {
+            .steps {
+                flex-direction: row;
+                flex-wrap: nowrap;
+            }
+            
+            .step {
+                flex-basis: 23%;
+                margin-bottom: 0;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .steps::before {
+                display: none;
+            }
+            
+            .step {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin-bottom: 2.5rem;
+            }
+            
+            .step-number {
+                margin-bottom: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
 
+        /* අනුපූරක ආලෝක බලපෑම් */
+        .glow-effect {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.2) 0%, rgba(0, 255, 255, 0) 70%);
+            filter: blur(20px);
+            z-index: 0;
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        .glow-1 {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0.5s;
+        }
+        
+        .glow-2 {
+            bottom: 10%;
+            right: 5%;
+            background: radial-gradient(circle, rgba(255, 0, 128, 0.2) 0%, rgba(255, 0, 128, 0) 70%);
+            animation-delay: 1s;
+        }
+        
+        /* අනිමේෂන නිර්වචන */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes expandLine {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100px;
+            }
+        }
+        
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+            }
+            70% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes iconSpin {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            70% {
+                transform: scale(1.1) rotate(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+        }
+        
+        @keyframes lineExpand {
+            from {
+                transform: scaleX(0);
+            }
+            to {
+                transform: scaleX(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-effect glow-1"></div>
+    <div class="glow-effect glow-2"></div>
+    
+    <!-- How it Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">FUNCTIONALITY</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <span class="step-icon"><i class="fas fa-gamepad"></i></span>
+                    <h3 class="step-title">CHOOSE A GAME</h3>
+                    <p>Choose The Game You Want.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <span class="step-icon"><i class="fas fa-credit-card"></i></span>
+                    <h3 class="step-title">PAY</h3>
+                    <p>Enter The Receipt Number You Received After Making a Payment Via Ez Cash.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <span class="step-icon"><i class="fas fa-download"></i></span>
+                    <h3 class="step-title">DOWNLOAD</h3>
+                    <p>After payment, Download Your Game.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <span class="step-icon"><i class="fas fa-share-alt"></i></span>
+                    <h3 class="step-title">ENJOY THE EXPERIENCE</h3>
+                    <p>Enjoy The Game And Share It With Friends.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Intersection Observer භාවිතා කරමින් අනිමේෂන සක්රීය කිරීම
+        document.addEventListener('DOMContentLoaded', function() {
+            const steps = document.querySelectorAll('.step');
+            
+            // පියවර නිරීක්ෂණය කිරීම
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            // සෑම පියවරක්ම නිරීක්ෂණය කිරීම
+            steps.forEach(step => {
+                observer.observe(step);
+            });
+            
+            // ශීර්ෂකය නිරීක්ෂණය කිරීම
+            const title = document.querySelector('.section-title');
+            const titleObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        titleObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            titleObserver.observe(title);
+        });
+    </script>
+</body>
+</html>
