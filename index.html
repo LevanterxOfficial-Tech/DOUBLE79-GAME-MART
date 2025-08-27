@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LEVANTER-DOUBLE 79 GAME MART</title>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -25,7 +27,6 @@
       to { background-position: 200px 0; }
     }
 
-    /* 🔹 Logo Animation */
     .logo {
       width: 160px;
       height: 160px;
@@ -57,6 +58,30 @@
     }
 
     h1 span { color: rgb(26, 43, 226); }
+
+    /* Social Icons */
+    .social-icons {
+      text-align: center; 
+      margin-top: 10px; 
+      gap: 15px; 
+      display: flex; 
+      justify-content: center;
+      animation: fadeDown 2s ease forwards;
+      opacity: 0;
+    }
+
+    .social-icons a {
+      font-size: 1.8rem;
+      text-decoration: none;
+      transition: transform 0.3s, color 0.3s;
+    }
+
+    .social-icons a:hover {
+      transform: scale(1.2);
+    }
+
+    .social-icons a.whatsapp { color: #25D366; }
+    .social-icons a.youtube { color: #FF0000; }
 
     .buttons {
       margin-top: 25px;
@@ -136,12 +161,6 @@
       border-radius: 50%;
       border: 3px solid rgb(0, 0, 0);
       margin-bottom: 15px;
-      
-    }
-
-    @keyframes rotateImg {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
     }
 
     .card h3 { color: white; font-size: 1.5rem; margin-bottom: 5px; }
@@ -189,7 +208,12 @@
     <img src="https://github.com/LevanterxOfficial-Tech/DOUBLE79-GAME-MART/blob/main/Logo%201.jpg?raw=true" alt="Logo" class="logo" />
     <h1>DOUBLE 79<span> GAME MART</span></h1>
 
-    <!-- Fixed buttons div -->
+    <!-- Social Icons -->
+    <div class="social-icons">
+      <a href="https://wa.me/+94774541577" target="_blank" class="whatsapp"><i class="fa fa-whatsapp"></i></a>
+      <a href="https://youtube.com/@double79?si=sKOvwfYX0phenFwc" target="_blank" class="youtube"><i class="fa fa-youtube-play"></i></a>
+    </div>
+
     <div class="buttons">
       <a href="functionality.html">FUNCTIONALITY</a>
       <a href="book tickets.html">PC GAME STORE</a>
