@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Unlock owner form</title>
+  <style>
+    /* Simple Google-forms-like minimal styling */
+    :root{
+      --bg:#ffffff;
+      --card:#8f9e0c;
+      --accent:#000000;
+      --muted:#000000;
+      --danger:#881b14;
+      --radius:12px;
+      font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+    }
+    html,body{height:100%; margin:0; background:var(--bg);}
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .card{
+      width:100%;
+      max-width:520px;
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      padding:28px;
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:18px;
+      }
+    h1{
+      font-size:20px;
+      margin:0;
+      color:#000000;
+      letter-spacing:0.2px;
+    }
+    p.lead{
+      margin-top:6px;
+      margin-bottom:18px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    form .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-bottom:16px;
+    }
+    label{
+      font-size:13px;
+      color:#000000;
+    }
+    input[type="password"]{
+      height:44px;
+      padding:10px 12px;
+      font-size:15px;
+      border-radius:8px;
+      border:1px solid #000000;
+      outline:none;
+      transition: box-shadow .12s, border-color .12s, transform .12s;
+    }
+    input[type="password"]:focus{
+      border-color:var(--accent);
+      box-shadow: 0 4px 12px rgba(26,115,232,0.12);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    button{
+      height:44px;
+      padding:0 16px;
+      border-radius:8px;
+      border:0;
+      cursor:pointer;
+      font-weight:600;
+      font-size:14px;
+    }
+    .btn-primary{
+      background:var(--accent);
+      color:rgb(255, 255, 255);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.24);
+    }
+    .btn-secondary{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid #ffffff;
+    }
+
+    .hint{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+
+    .error{
+      color:var(--danger);
+      font-size:13px;
+      margin-top:8px;
+      display:none;
+    }
+
+    /* shake animation for wrong password */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+      100% { transform: translateX(0); }
+    }
+    .shake {
+      animation: shake .45s ease;
+    }
+
+    /* small responsive */
+    @media (max-width:480px){
+      .card{ padding:20px; border-radius:10px; }
+      h1{ font-size:18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="main" aria-labelledby="title">
+      <div class="brand" aria-hidden="true">
+        
+        <div>
+          <h1 id="title">OWNER ONLY</h1>
+          
+        </div>
+      </div>
+
+      <form id="unlockForm" autocomplete="off">
+        <div class="field">
+          <label for="password">PASSWORD</label>
+          <input id="password" name="password" type="password" inputmode="text" aria-describedby="hint" required />
+          <div id="hint" class="hint">If </div>
+          <div id="error" class="error" role="alert">Password නොකැරේ — නැවත උත්සහ කරන්න.</div>
+        </div>
+
+        <div class="actions">
+          
+          <button type="submit" class="btn-primary" id="unlockBtn">UNLOCK</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const CORRECT = "Double79"; // exact password (case-sensitive)
+      const form = document.getElementById("unlockForm");
+      const pwd = document.getElementById("password");
+      const error = document.getElementById("error");
+      const card = document.querySelector(".card");
+      const cancel = document.getElementById("cancelBtn");
+
+      cancel.addEventListener("click", () => {
+        pwd.value = "";
+        error.style.display = "none";
+        pwd.focus();
+      });
+
+      // submit handler
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        checkPassword();
+      });
+
+      // allow Enter on password field
+      pwd.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          checkPassword();
+        }
+      });
+
+      function checkPassword(){
+        const val = pwd.value || "";
+        if (val === CORRECT) {
+          // success: redirect to owneronly.html
+          // use location.href so it behaves like normal navigation
+          window.location.href = "owneronly.html";
+        } else {
+          // show error and little shake
+          error.style.display = "block";
+          card.classList.remove("shake");
+          // trigger reflow to restart animation
+          void card.offsetWidth;
+          card.classList.add("shake");
+          // clear password field for security
+          pwd.value = "";
+          pwd.focus();
+        }
+      }
+
+      // Optional: prevent pasting the password for mild protection
+      pwd.addEventListener("paste", (e) => {
+        // comment out next line if you want to allow paste
+        // e.preventDefault();
+      });
+    })();
+  </script>
+</body>
+</html>
