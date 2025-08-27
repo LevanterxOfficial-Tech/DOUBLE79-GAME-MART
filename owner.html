@@ -1,1 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Submission Form</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #202124;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            padding: 24px;
+        }
+        
+        .header {
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .title {
+            font-size: 32px;
+            color: #1a73e8;
+            margin-bottom: 8px;
+        }
+        
+        .description {
+            color: #5f6368;
+            font-size: 14px;
+        }
+        
+        .form-section {
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            color: #202124;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #202124;
+            font-weight: 500;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border 0.2s;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border: 1px solid #1a73e8;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #d93025;
+        }
+        
+        .submit-btn {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #1967d2;
+        }
+        
+        .submit-btn:disabled {
+            background-color: #a8c7fa;
+            cursor: not-allowed;
+        }
+        
+        .success-message {
+            background-color: #e6f4ea;
+            color: #137333;
+            padding: 16px;
+            border-radius: 4px;
+            margin-top: 16px;
+            display: none;
+        }
+        
+        .error-message {
+            background-color: #fce8e6;
+            color: #c5221f;
+            padding: 16px;
+            border-radius: 4px;
+            margin-top: 16px;
+            display: none;
+        }
+        
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            color: #5f6368;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Product Submission Form</h1>
+            <p class="description">Please fill out all the required fields to submit a new product.</p>
+        </div>
+        
+        <form id="productForm">
+            <div class="form-section">
+                <h2 class="section-title">Product Information</h2>
+                
+                <div class="form-group">
+                    <label for="productName" class="required">Product Name</label>
+                    <input type="text" id="productName" name="productName" required placeholder="Enter product name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="productPrice" class="required">Price ($)</label>
+                    <input type="number" id="productPrice" name="productPrice" required placeholder="0.00" step="0.01" min="0">
+                </div>
+                
+                <div class="form-group">
+                    <label for="productDescription" class="required">Description</label>
+                    <textarea id="productDescription" name="productDescription" required placeholder="Enter product description"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="imageUrl" class="required">Image URL</label>
+                    <input type="url" id="imageUrl" name="imageUrl" required placeholder="https://example.com/image.jpg">
+                </div>
+                
+                <div class="form-group">
+                    <label for="downloadLink" class="required">Download Link</label>
+                    <input type="url" id="downloadLink" name="downloadLink" required placeholder="https://example.com/download">
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
+        </form>
+        
+        <div id="successMessage" class="success-message">
+            Product submitted successfully! Data has been saved to Firebase.
+        </div>
+        
+        <div id="errorMessage" class="error-message">
+            There was an error submitting the form. Please try again.
+        </div>
+        
+        <div class="footer">
+            <p>This form connects to Firebase Realtime Database for data storage.</p>
+        </div>
+    </div>
 
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBKahEg0xykXxmi7Xeu7wdW1QTy70qOwFA",
+            authDomain: "databass-20cde.firebaseapp.com",
+            databaseURL: "https://databass-20cde-default-rtdb.firebaseio.com",
+            projectId: "databass-20cde",
+            storageBucket: "databass-20cde.firebasestorage.app",
+            messagingSenderId: "396898869714",
+            appId: "1:396898869714:web:4108cbb2fe556fc79ae80b",
+            measurementId: "G-G2LQFJ45E1"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Form submission handler
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const productName = document.getElementById('productName').value;
+            const productPrice = document.getElementById('productPrice').value;
+            const productDescription = document.getElementById('productDescription').value;
+            const imageUrl = document.getElementById('imageUrl').value;
+            const downloadLink = document.getElementById('downloadLink').value;
+            
+            // Disable submit button
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            // Hide previous messages
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            
+            // Create product object
+            const productData = {
+                name: productName,
+                price: productPrice,
+                description: productDescription,
+                imageUrl: imageUrl,
+                downloadLink: downloadLink,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Save to Firebase
+            const newProductRef = database.ref('products').push();
+            newProductRef.set(productData)
+                .then(() => {
+                    // Show success message
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Reset form
+                    document.getElementById('productForm').reset();
+                })
+                .catch((error) => {
+                    // Show error message
+                    document.getElementById('errorMessage').style.display = 'block';
+                    console.error('Error writing to Firebase:', error);
+                })
+                .finally(() => {
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit';
+                });
+        });
+    </script>
+</body>
+</html>
