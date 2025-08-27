@@ -25,21 +25,35 @@
       to { background-position: 200px 0; }
     }
 
+    /* 🔹 Logo Animation */
     .logo {
       width: 160px;
       height: 160px;
       border-radius: 50%;
-      border: 3px solid rgb(0, 8, 255);
+      border: 3px solid rgb(255, 255, 255);
       object-fit: cover;
       box-shadow: 0 0 25px rgb(13, 0, 255);
       margin: 20px auto;
       display: block;
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 0 20px rgb(13, 0, 255); transform: scale(1); }
+      to { box-shadow: 0 0 40px rgb(0, 42, 255); transform: scale(1.05); }
     }
 
     h1 {
       font-size: 2em;
       margin: 20px 0 10px;
       text-align: center;
+      animation: fadeDown 2s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeDown {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
     h1 span { color: rgb(26, 43, 226); }
@@ -50,21 +64,35 @@
       flex-direction: column;
       gap: 15px;
       align-items: center;
+      animation: fadeUp 2s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
     .buttons a {
       padding: 12px 25px;
       border-radius: 30px;
-      border: 2px solid red;
-      background: linear-gradient(to right, #ff0000, #800000);
+      border: 2px solid rgb(255, 255, 255);
+      background: linear-gradient(to right, #000000, #040f74);
       color: white;
       text-decoration: none;
       font-weight: bold;
       transition: 0.3s;
+      animation: pulse 2.5s infinite;
     }
 
     .buttons a:hover {
-      background: #ff3333;
+      background: #1400c7;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
     }
 
     .support-cards {
@@ -73,18 +101,21 @@
       flex-direction: column;
       gap: 25px;
       align-items: center;
+      animation: fadeUp 2.5s ease forwards;
+      opacity: 0;
     }
 
     .card {
-      background: linear-gradient(to bottom right, #220000, #400000);
-      border: 2px solid red;
+      background: linear-gradient(to bottom right, #000000, #031a4b);
+      border: 2px solid rgb(253, 253, 253);
       border-radius: 25px;
       padding: 25px;
       width: 95%;
       max-width: 260px;
-      box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+      box-shadow: 0 0 30px rgba(15, 47, 192, 0.4);
       text-align: center;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: floatCard 4s ease-in-out infinite;
     }
 
     .card:hover {
@@ -92,13 +123,25 @@
       box-shadow: 0 0 35px rgba(0, 21, 255, 0.6);
     }
 
+    @keyframes floatCard {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
     .card-img {
       width: 120px;
       height: 120px;
       object-fit: cover;
       border-radius: 50%;
-      border: 3px solid rgb(255, 0, 0);
+      border: 3px solid rgb(255, 255, 255);
       margin-bottom: 15px;
+      
+    }
+
+    @keyframes rotateImg {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     .card h3 { color: white; font-size: 1.5rem; margin-bottom: 5px; }
@@ -107,23 +150,36 @@
     .contact-btn {
       padding: 10px 20px;
       font-size: 1rem;
-      color: rgb(255, 0, 0);
+      color: rgb(255, 255, 255);
       border: none;
       border-radius: 25px;
       text-decoration: none;
       transition: 0.3s;
+      animation: blink 1.5s infinite alternate;
+    }
+
+    @keyframes blink {
+      from { opacity: 0.6; }
+      to { opacity: 1; }
     }
 
     .contact-btn:hover {
-      background: rgb(236, 7, 7);
+      background: rgb(255, 255, 255);
       color: rgb(0, 0, 0);
     }
 
     .rights {
       margin-top: 20px;
-      color: rgb(255, 1, 1);
+      color: rgb(189, 231, 1);
       font-size: 0.9rem;
       text-align: center;
+      animation: fadeIn 3s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
