@@ -17,7 +17,7 @@
         repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255, 0, 0, 0.15) 40px);
       background-size: 40px 40px;
       animation: moveGrid 10s linear infinite;
-      color: #fff;
+      color: #ffffff;
       min-height: 100vh;
       padding: 20px;
     }
@@ -25,6 +25,23 @@
     @keyframes moveGrid {
       from { background-position: 0 0; }
       to { background-position: 200px 0; }
+    }
+
+    /* Menu Icon */
+    .menu-icon {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      font-size: 20px; /* smaller size */
+      color: rgb(21, 0, 255);
+      cursor: pointer;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+
+    .menu-icon:hover {
+      transform: scale(1.2);
+      color: #1a2be2;
     }
 
     .logo {
@@ -204,6 +221,9 @@
 </head>
 <body>
 
+  <!-- Menu Icon -->
+  <a href="lock.html" class="menu-icon"><i class="fa fa-bars"></i></a>
+
   <div id="main-content">
     <img src="https://github.com/LevanterxOfficial-Tech/DOUBLE79-GAME-MART/blob/main/Logo%201.jpg?raw=true" alt="Logo" class="logo" />
     <h1>DOUBLE 79<span> GAME MART</span></h1>
@@ -215,8 +235,8 @@
     </div>
 
     <div class="buttons">
-      <a href="lock.html">OWNER ONLY</a>
-        <a href="pcgamestore.html">PC GAME STORE</a> 
+      
+      <a href="pcgamestore.html">PC GAME STORE</a> 
       <a href="downloadinghelp.html">DOWNLOADING HELP</a>
     </div>
 
