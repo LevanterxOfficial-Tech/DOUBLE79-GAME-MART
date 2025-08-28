@@ -7,10 +7,10 @@
   <style>
     /* Simple Google-forms-like minimal styling */
     :root{
-      --bg:#f8f9fa;
-      --card:#fff;
+      --bg:#021a33;
+      --card:#ffffff;
       --accent:#1a73e8;
-      --muted:#5f6368;
+      --muted:#000000;
       --danger:#d93025;
       --radius:12px;
       font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
@@ -37,19 +37,7 @@
       align-items:center;
       margin-bottom:18px;
     }
-    .logo{
-      width:42px;
-      height:42px;
-      border-radius:8px;
-      background:linear-gradient(90deg,#34a853,#4285f4,#fbbc05,#ea4335);
-      box-shadow: 0 2px 6px rgba(60,64,67,0.12);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:white;
-      font-weight:700;
-      font-size:18px;
-    }
+    
     h1{
       font-size:20px;
       margin:0;
@@ -71,7 +59,7 @@
     }
     label{
       font-size:13px;
-      color:#3c4043;
+      color:#000000;
     }
     input[type="password"]{
       height:44px;
@@ -105,7 +93,7 @@
     .btn-primary{
       background:var(--accent);
       color:white;
-      box-shadow: 0 2px 6px rgba(26,115,232,0.24);
+      box-shadow: 0 2px 6px rgba(1, 30, 67, 0.24);
     }
     .btn-secondary{
       background:transparent;
@@ -150,24 +138,24 @@
   <div class="wrap">
     <div class="card" role="main" aria-labelledby="title">
       <div class="brand" aria-hidden="true">
-        <div class="logo">G</div>
+        <div class="logo"></div>
         <div>
-          <h1 id="title">Unlock owner form</h1>
-          <p class="lead">මෙම පිටුවට ඇතුළත් වීමට password අහන්න.</p>
+          <h1 id="title">OWNER ONLY</h1>
+          <p class="lead">THIS PAGE OWNER ONLY</p>
         </div>
       </div>
 
       <form id="unlockForm" autocomplete="off">
         <div class="field">
-          <label for="password">Password</label>
+          <label for="password">PASSWOED</label>
           <input id="password" name="password" type="password" inputmode="text" aria-describedby="hint" required />
-          <div id="hint" class="hint">ඔබට password නැත්නම් අනුමතිය නොලැබේ.</div>
-          <div id="error" class="error" role="alert">Password නොකැරේ — නැවත උත්සහ කරන්න.</div>
+          <div id="hint" class="hint">YOU WILL NOT RECEIVE APPROVAL IF YOU DO NOT HAVE A PASSWORD......</div>
+          <div id="error" class="error" role="alert">PASSWORD IS INCORRECT _ PLEASE TRY AGAIN</div>
         </div>
 
         <div class="actions">
-          <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
-          <button type="submit" class="btn-primary" id="unlockBtn">Unlock</button>
+          <button type="button" class="btn-secondary" id="cancelBtn">RESTART</button>
+          <button type="submit" class="btn-primary" id="unlockBtn">UNLOCK</button>
         </div>
       </form>
     </div>
