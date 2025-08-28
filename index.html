@@ -1,219 +1,91 @@
 <!DOCTYPE html>
 <html lang="si">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>10 Minute Loading Animation</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #000000, #000000, #000000);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
-        }
-        
-        .container {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 40px 60px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            max-width: 500px;
-            width: 90%;
-        }
-        
-        h1 {
-            margin-bottom: 20px;
-            font-weight: 600;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-        
-        .loading-text {
-            margin: 20px 0;
-            font-size: 18px;
-            letter-spacing: 1px;
-        }
-        
-        .countdown {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 15px 0;
-            color: #000000;
-        }
-        
-        .dots-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 60px;
-        }
-        
-        .dot {
-            width: 12px;
-            height: 12px;
-            margin: 0 6px;
-            border-radius: 50%;
-            background-color: #fff;
-            animation: pulse 1.5s infinite ease-in-out;
-        }
-        
-        .dot:nth-child(1) {
-            animation-delay: 0s;
-            background-color: #003cff;
-        }
-        
-        .dot:nth-child(2) {
-            animation-delay: 0.2s;
-            background-color: #0004ff;
-        }
-        
-        .dot:nth-child(3) {
-            animation-delay: 0.4s;
-            background-color: #1e00ff;
-        }
-        
-        .dot:nth-child(4) {
-            animation-delay: 0.6s;
-            background-color: #0055ff;
-        }
-        
-        .dot:nth-child(5) {
-            animation-delay: 0.8s;
-            background-color: #001aff;
-        }
-        
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(0.8);
-                opacity: 0.7;
-            }
-            50% {
-                transform: scale(1.4);
-                opacity: 1;
-            }
-        }
-        
-        .progress-container {
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 10px;
-            width: 0%;
-            background: linear-gradient(to right, #000000, #000000, #000000, #000000, #000000);
-            border-radius: 10px;
-            transition: width 0.5s ease;
-        }
-        
-        .redirect-text {
-            margin-top: 15px;
-            font-size: 14px;
-            opacity: 0.8;
-        }
-        
-        .cancel-btn {
-            margin-top: 20px;
-            padding: 8px 20px;
-            background: rgba(0, 0, 0, 0.2);
-            border: none;
-            border-radius: 20px;
-            color: white;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .cancel-btn:hover {
-            background: rgba(0, 0, 0, 0.3);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loading Dots - Auto Redirect</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: black;
+    }
+
+    .dots-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60px;
+    }
+
+    .dot {
+      width: 15px;
+      height: 15px;
+      margin: 0 8px;
+      border-radius: 50%;
+      background-color: #fff;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    .dot:nth-child(1) {
+      animation-delay: 0s;
+      background-color: #003cff;
+    }
+
+    .dot:nth-child(2) {
+      animation-delay: 0.2s;
+      background-color: #0004ff;
+    }
+
+    .dot:nth-child(3) {
+      animation-delay: 0.4s;
+      background-color: #1e00ff;
+    }
+
+    .dot:nth-child(4) {
+      animation-delay: 0.6s;
+      background-color: #0055ff;
+    }
+
+    .dot:nth-child(5) {
+      animation-delay: 0.8s;
+      background-color: #001aff;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(0.8);
+        opacity: 0.7;
+      }
+      50% {
+        transform: scale(1.4);
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1></h1>
-        
-        <div class="dots-container">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
-        
-        <p class="loading-text"></p>
-        
-        <div class="countdown" id="countdown">10:00</div>
-        
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        
-        <p class="redirect-text"></p>
-        
-        <button class="cancel-btn" id="cancel-btn"></button>
-    </div>
+  <div class="dots-container">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
 
-    <script>
-        // Set the duration in seconds (10 minutes = 600 seconds)
-        const duration = 4;
-        let timeLeft = duration;
-        let redirectTimer;
-        
-        const countdownElement = document.getElementById('countdown');
-        const progressBar = document.getElementById('progress-bar');
-        const cancelBtn = document.getElementById('cancel-btn');
-        
-        // Format time as mm:ss
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-        
-        // Update the countdown and progress bar
-        function updateCountdown() {
-            timeLeft--;
-            
-            // Update countdown text
-            countdownElement.textContent = formatTime(timeLeft);
-            
-            // Update progress bar
-            const progress = ((duration - timeLeft) / duration) * 100;
-            progressBar.style.width = `${progress}%`;
-            
-            // Redirect when time is up
-            if (timeLeft <= 0) {
-                clearInterval(redirectTimer);
-                window.location.href = 'home.html';
-            }
-        }
-        
-        // Start the countdown
-        redirectTimer = setInterval(updateCountdown, 1000);
-        
-        // Cancel redirect functionality
-        cancelBtn.addEventListener('click', function() {
-            clearInterval(redirectTimer);
-            countdownElement.textContent = '';
-            countdownElement.style.color = '#ff6b6b';
-            document.querySelector('.redirect-text').textContent = '';
-            progressBar.style.width = '100%';
-            progressBar.style.background = '#ff6b6b';
-            this.style.display = 'none';
-        });
-    </script>
+  <script>
+    // 10 minutes = 600000 milliseconds
+    setTimeout(() => {
+      window.location.href = "home.html";
+    }, 5000);
+  </script>
 </body>
 </html>
