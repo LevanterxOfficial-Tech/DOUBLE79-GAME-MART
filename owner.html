@@ -8,284 +8,80 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-        }
-        
-        body {
-            background-color: #000000;
-            color: #202124;
-            line-height: 1.6;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: rgb(255, 255, 255);
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-            padding: 24px;
-        }
-        
-        .header {
-            border-bottom: 1px solid #e0e0e0;
-            padding-bottom: 16px;
-            margin-bottom: 24px;
-        }
-        
-        .title {
-            font-size: 32px;
-            color: #1a73e8;
-            margin-bottom: 8px;
-        }
-        
-        .description {
-            color: #5f6368;
-            font-size: 14px;
-        }
-        
-        .form-section {
-            margin-bottom: 24px;
-        }
-        
-        .section-title {
-            font-size: 16px;
-            color: #202124;
-            margin-bottom: 16px;
-            font-weight: 500;
-        }
-        
-        .form-group {
-            margin-bottom: 16px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: #202124;
-            font-weight: 500;
-        }
-        
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #dadce0;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: border 0.2s;
-        }
-        
-        input:focus, textarea:focus {
-            outline: none;
-            border: 1px solid #1a73e8;
-        }
-        
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        
-        .required::after {
-            content: " *";
-            color: #d93025;
-        }
-        
-        .submit-btn {
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .submit-btn:hover {
-            background-color: #1967d2;
-        }
-        
-        .submit-btn:disabled {
-            background-color: #a8c7fa;
-            cursor: not-allowed;
-        }
-        
-        .success-message {
-            background-color: #e6f4ea;
-            color: #137333;
-            padding: 16px;
-            border-radius: 4px;
-            margin-top: 16px;
-            display: none;
-        }
-        
-        .error-message {
-            background-color: #fce8e6;
-            color: #c5221f;
-            padding: 16px;
-            border-radius: 4px;
-            margin-top: 16px;
-            display: none;
-        }
-        
-        .footer {
-            margin-top: 24px;
-            text-align: center;
-            color: #5f6368;
-            font-size: 12px;
-        }
-        
-        /* Products display section */
-        .products-section {
-            margin-top: 32px;
-            border-top: 1px solid #e0e0e0;
-            padding-top: 24px;
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 16px;
-            margin-top: 16px;
-        }
-        
-        .product-card {
-            border: 1px solid #dadce0;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .product-image {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            border-bottom: 1px solid #dadce0;
-        }
-        
-        .product-info {
-            padding: 12px;
-        }
-        
-        .product-name {
-            font-weight: 500;
-            font-size: 16px;
-            margin-bottom: 6px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .product-price {
-            color: #1a73e8;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-        
-        .product-description {
-            font-size: 14px;
-            color: #5f6368;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-bottom: 12px;
-            height: 40px;
-        }
-        
-        .delete-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #d93025;
-            font-size: 16px;
-            transition: background 0.2s, transform 0.2s;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .delete-btn:hover {
-            background: white;
-            transform: scale(1.1);
-            color: #c5221f;
-        }
-        
-        .no-products {
-            text-align: center;
-            color: #5f6368;
-            padding: 24px;
-            grid-column: 1 / -1;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
+        body { background-color: #000000; color: #202124; line-height: 1.6; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: rgb(255, 255, 255); border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); padding: 24px; }
+        .header { border-bottom: 1px solid #e0e0e0; padding-bottom: 16px; margin-bottom: 24px; }
+        .title { font-size: 32px; color: #1a73e8; margin-bottom: 8px; }
+        .description { color: #5f6368; font-size: 14px; }
+        .form-section { margin-bottom: 24px; }
+        .section-title { font-size: 16px; color: #202124; margin-bottom: 16px; font-weight: 500; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; color: #202124; font-weight: 500; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #dadce0; border-radius: 4px; font-size: 14px; transition: border 0.2s; }
+        input:focus, textarea:focus { outline: none; border: 1px solid #1a73e8; }
+        textarea { min-height: 100px; resize: vertical; }
+        .required::after { content: " *"; color: #d93025; }
+        .submit-btn { background-color: #1a73e8; color: white; border: none; padding: 12px 24px; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; }
+        .submit-btn:hover { background-color: #1967d2; }
+        .submit-btn:disabled { background-color: #a8c7fa; cursor: not-allowed; }
+        .success-message { background-color: #e6f4ea; color: #137333; padding: 16px; border-radius: 4px; margin-top: 16px; display: none; }
+        .error-message { background-color: #fce8e6; color: #c5221f; padding: 16px; border-radius: 4px; margin-top: 16px; display: none; }
+        .footer { margin-top: 24px; text-align: center; color: #5f6368; font-size: 12px; }
+        .products-section { margin-top: 32px; border-top: 1px solid #e0e0e0; padding-top: 24px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 16px; }
+        .product-card { border: 1px solid #dadce0; border-radius: 8px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 6px 10px rgba(0,0,0,0.1); }
+        .product-image { width: 100%; height: 140px; object-fit: cover; border-bottom: 1px solid #dadce0; }
+        .product-info { padding: 12px; }
+        .product-name { font-weight: 500; font-size: 16px; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-price { color: #1a73e8; font-weight: bold; margin-bottom: 8px; }
+        .product-description { font-size: 14px; color: #5f6368; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 12px; height: 40px; }
+        .delete-btn { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #d93025; font-size: 16px; transition: background 0.2s, transform 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .delete-btn:hover { background: white; transform: scale(1.1); color: #c5221f; }
+        .no-products { text-align: center; color: #5f6368; padding: 24px; grid-column: 1 / -1; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="title">GAMES SUBMISSION FROM</h1>
-            <p class="description">Please Fill Out All The Required Fields To Submit a New Product ...</p>
+            <h1 class="title">GAMES SUBMISSION FORM</h1>
+            <p class="description">Please fill out all required fields to submit a new product.</p>
         </div>
         
         <form id="productForm">
             <div class="form-section">
-                
-                
                 <div class="form-group">
                     <label for="productName" class="required">Product Name</label>
                     <input type="text" id="productName" name="productName" required placeholder="Enter product name">
                 </div>
-                
                 <div class="form-group">
                     <label for="productPrice" class="required">Price LKR</label>
                     <input type="number" id="productPrice" name="productPrice" required placeholder="0.00" step="0.01" min="0">
                 </div>
-                
                 <div class="form-group">
                     <label for="productDescription" class="required">Description</label>
                     <textarea id="productDescription" name="productDescription" required placeholder="Enter product description"></textarea>
                 </div>
-                
                 <div class="form-group">
                     <label for="imageUrl" class="required">Image URL</label>
                     <input type="url" id="imageUrl" name="imageUrl" required placeholder="https://example.com/image.jpg">
                 </div>
-                
                 <div class="form-group">
                     <label for="downloadLink" class="required">Download Link</label>
                     <input type="url" id="downloadLink" name="downloadLink" required placeholder="https://example.com/download">
                 </div>
             </div>
-            
             <button type="submit" class="submit-btn" id="submitBtn">SUBMIT</button>
         </form>
         
         <div id="successMessage" class="success-message">
-            Product Submitted Successfully! Data Has Been Saved To Firebase.
+            Product Submitted Successfully! Data has been saved to Firebase.
         </div>
-        
         <div id="errorMessage" class="error-message">
-            There Was an Error Submitting The Form. Please Try Again.
+            There was an error submitting the form. Please try again.
         </div>
-        
+
         <!-- Products Display Section -->
         <div class="products-section">
             <h2 class="section-title">SUBMITTED PRODUCTS</h2>
@@ -295,12 +91,11 @@
         </div>
         
         <div class="footer">
-            <p>This Form Connects To Firebase Realtime Database For Data Storage.</p>
+            <p>This form connects to Firebase Realtime Database for data storage.</p>
         </div>
     </div>
 
     <script>
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBKahEg0xykXxmi7Xeu7wdW1QTy70qOwFA",
             authDomain: "databass-20cde.firebaseapp.com",
@@ -311,74 +106,59 @@
             appId: "1:396898869714:web:4108cbb2fe556fc79ae80b",
             measurementId: "G-G2LQFJ45E1"
         };
-
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // Form submission handler
+        // Submit handler
         document.getElementById('productForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Get form values
             const productName = document.getElementById('productName').value;
-            const productPrice = document.getElementById('productPrice').value;
+            const productPrice = parseFloat(document.getElementById('productPrice').value); // LKR
             const productDescription = document.getElementById('productDescription').value;
             const imageUrl = document.getElementById('imageUrl').value;
             const downloadLink = document.getElementById('downloadLink').value;
-            
-            // Disable submit button
+
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
-            
-            // Hide previous messages
+
             document.getElementById('successMessage').style.display = 'none';
             document.getElementById('errorMessage').style.display = 'none';
-            
-            // Create product object
+
             const productData = {
                 name: productName,
-                price: productPrice,
+                price: productPrice, // LKR
                 description: productDescription,
                 imageUrl: imageUrl,
                 downloadLink: downloadLink,
                 timestamp: new Date().toISOString()
             };
-            
-            // Save to Firebase
+
             const newProductRef = database.ref('products').push();
             newProductRef.set(productData)
                 .then(() => {
-                    // Show success message
                     document.getElementById('successMessage').style.display = 'block';
-                    
-                    // Reset form
                     document.getElementById('productForm').reset();
                 })
                 .catch((error) => {
-                    // Show error message
                     document.getElementById('errorMessage').style.display = 'block';
                     console.error('Error writing to Firebase:', error);
                 })
                 .finally(() => {
-                    // Re-enable submit button
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Submit';
+                    submitBtn.textContent = 'SUBMIT';
                 });
         });
 
-        // Function to display products
+        // Display products
         function displayProducts(products) {
             const productsContainer = document.getElementById('productsContainer');
-            
             if (!products || Object.keys(products).length === 0) {
                 productsContainer.innerHTML = '<div class="no-products">No products submitted yet.</div>';
                 return;
             }
-            
             productsContainer.innerHTML = '';
-            
+
             Object.entries(products).forEach(([key, product]) => {
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
@@ -389,44 +169,26 @@
                     <img src="${product.imageUrl}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/220x140?text=Image+Not+Found'">
                     <div class="product-info">
                         <h3 class="product-name">${product.name}</h3>
-                        <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
+                        <div class="product-price">LKR ${Number(product.price).toLocaleString('en-LK', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
                         <p class="product-description">${product.description}</p>
                     </div>
                 `;
                 productsContainer.appendChild(productCard);
             });
-            
-            // Add event listeners to delete buttons
-            document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function() {
+
+            // Delete button event
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
                     const productKey = this.getAttribute('data-key');
-                    deleteProduct(productKey);
+                    if (confirm('Are you sure you want to delete this product?')) {
+                        database.ref('products/' + productKey).remove();
+                    }
                 });
             });
         }
 
-        // Function to delete a product
-        function deleteProduct(productKey) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                database.ref('products/' + productKey).remove()
-                    .then(() => {
-                        console.log('Product deleted successfully');
-                    })
-                    .catch((error) => {
-                        console.error('Error deleting product:', error);
-                        alert('Error deleting product. Please try again.');
-                    });
-            }
-        }
-
-        // Listen for changes in the products data
-        database.ref('products').on('value', (snapshot) => {
-            const products = snapshot.val();
-            displayProducts(products);
-        });
-
-        // Initial load of products
-        database.ref('products').once('value').then((snapshot) => {
+        // Listen for Firebase changes
+        database.ref('products').on('value', snapshot => {
             const products = snapshot.val();
             displayProducts(products);
         });
