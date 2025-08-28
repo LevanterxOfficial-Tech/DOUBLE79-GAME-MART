@@ -16,7 +16,7 @@
         }
         
         body {
-            background-color: #f8f9fa;
+            background-color: #000000;
             color: #202124;
             line-height: 1.6;
             padding: 20px;
@@ -25,7 +25,7 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: white;
+            background: rgb(255, 255, 255);
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
             padding: 24px;
@@ -241,13 +241,13 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="title">Product Submission Form</h1>
-            <p class="description">Please fill out all the required fields to submit a new product.</p>
+            <h1 class="title">GAMES SUBMISSION FROM</h1>
+            <p class="description">Please Fill Out All The Required Fields To Submit a New Product ...</p>
         </div>
         
         <form id="productForm">
             <div class="form-section">
-                <h2 class="section-title">Product Information</h2>
+                
                 
                 <div class="form-group">
                     <label for="productName" class="required">Product Name</label>
@@ -255,7 +255,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="productPrice" class="required">Price ($)</label>
+                    <label for="productPrice" class="required">Price LKR</label>
                     <input type="number" id="productPrice" name="productPrice" required placeholder="0.00" step="0.01" min="0">
                 </div>
                 
@@ -275,27 +275,27 @@
                 </div>
             </div>
             
-            <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
+            <button type="submit" class="submit-btn" id="submitBtn">SUBMIT</button>
         </form>
         
         <div id="successMessage" class="success-message">
-            Product submitted successfully! Data has been saved to Firebase.
+            Product Submitted Successfully! Data Has Been Saved To Firebase.
         </div>
         
         <div id="errorMessage" class="error-message">
-            There was an error submitting the form. Please try again.
+            There Was an Error Submitting The Form. Please Try Again.
         </div>
         
         <!-- Products Display Section -->
         <div class="products-section">
-            <h2 class="section-title">Submitted Products</h2>
+            <h2 class="section-title">SUBMITTED PRODUCTS</h2>
             <div id="productsContainer" class="products-grid">
-                <div class="no-products">No products submitted yet.</div>
+                <div class="no-products">No Products Submitted Yet.</div>
             </div>
         </div>
         
         <div class="footer">
-            <p>This form connects to Firebase Realtime Database for data storage.</p>
+            <p>This Form Connects To Firebase Realtime Database For Data Storage.</p>
         </div>
     </div>
 
